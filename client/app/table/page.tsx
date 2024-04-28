@@ -107,6 +107,17 @@ const Table = () => {
           )}
         </div>
       </div>
+      <div className="m-3 p-3 grid grid-cols-12 justify-between gap-3 h-[200px] w-[940px]">
+        <div className="col-span-4 justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
+          <p className="font-bold">Total Subscriber Count</p>
+        </div>
+        <div className="col-span-4 justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
+          <p className="font-bold">Subscriber Longest Duration </p>
+        </div>
+        <div className="col-span-4 justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
+          <p className="font-bold">Country with Most Subscribers </p>
+        </div>
+      </div>
     </main>
   );
 };

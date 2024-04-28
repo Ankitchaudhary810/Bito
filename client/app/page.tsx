@@ -75,7 +75,7 @@ export default function Home() {
             className=" min-h-[300px] min-w-[300px] rounded-md  text-black flex  flex-col "
           >
             <input
-              className="p-2 m-2"
+              className="p-2 m-2 rounded-md active:outline-orange-600"
               type="text"
               value={subscriberId}
               onChange={(e) => setSubscriberId(e.target.value)}
@@ -83,7 +83,7 @@ export default function Home() {
               required
             />
             <input
-              className="p-2 m-2"
+              className="p-2 m-2 rounded-md"
               type="text"
               value={subscriberName}
               onChange={(e) => setSubscriberName(e.target.value)}
@@ -91,7 +91,7 @@ export default function Home() {
               required
             />
             <input
-              className="p-2 m-2"
+              className="p-2 m-2 rounded-md"
               type="text"
               value={subscriberCountry}
               onChange={(e) => setSubscriberCountry(e.target.value)}
@@ -99,7 +99,7 @@ export default function Home() {
               required
             />
             <input
-              className="p-2 m-2"
+              className="p-2 m-2 rounded-md"
               type="date"
               value={subscriptionDate}
               onChange={(e) => setSubscriptionDate(e.target.value)}
@@ -107,7 +107,7 @@ export default function Home() {
               required
             />
             <button
-              className="p-2 m-2 bg-gray-200 hover:bg-gray-300 rounded"
+              className="p-2 m-2 bg-white px-8 py-3 text-indigo-600 hover:bg-transparent hover:text-white focus:outline-none focus:ring active:bg-white/90 hover:bg-indigo-600 rounded-full"
               type="submit"
               disabled={loading}
             >
