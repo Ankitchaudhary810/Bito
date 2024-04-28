@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 import { v4 as uuidv4 } from "uuid";
 
 export default function Home() {
@@ -14,6 +15,7 @@ export default function Home() {
 
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
+    toast.loading("Adding..", { id: "1" });
     setLoading(true);
     const subscriptionId = uuidv4();
     const data = {
@@ -37,10 +39,11 @@ export default function Home() {
     console.log(result);
     if (result.success) {
       setLoading(false);
+      toast.success("done..", { id: "1" });
       router.push("/table");
     } else {
       setLoading(false);
-      alert(result.error);
+      toast.error("error..", { id: "1" });
     }
   };
 

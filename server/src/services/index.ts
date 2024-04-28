@@ -30,7 +30,16 @@ class Service {
         res.status(400).json({ success: false, error: error.message });
       }
     } else {
-      res.status(405).json({ error: "Method not allowed" });
+      res.status(405).json({ error: `${req.method} Method not allowed` });
+    }
+  }
+
+  public static async GetAllSubscription(req: Request, res: Response) {
+    if (req.method === "GET") {
+      const subscriptios = await prisma.subscription.findMany({});
+      res.status(201).json(subscriptios);
+    } else {
+      res.status(405).json({ error: `${req.method} Method not allowed` });
     }
   }
 }
