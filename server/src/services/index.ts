@@ -104,7 +104,6 @@ class Service {
           },
           take: 1,
         });
-        console.log(result);
         if (result.length > 0) {
           const mostSubscribersCountry = result[0];
           res.json({
