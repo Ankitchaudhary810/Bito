@@ -1,5 +1,5 @@
 import express from "express";
 const router = express.Router();
-
-router.post("/api/v1/create-sub");
+import Service from "../services";
+router.post("/create-subscription", Service.createSubscription);
 export default router;
