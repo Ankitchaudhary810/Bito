@@ -15,6 +15,55 @@ const Table = () => {
   const [isLoading, setisLoading] = useState(false);
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
 
+  const [totalSubscribers, setTotalSubscribers] = useState(0);
+  const [longestDuration, setLongestDuration] = useState({
+    subscriber: {},
+    durationInDays: 0,
+  });
+  const [mostSubscribersCountry, setMostSubscribersCountry] = useState({
+    country: "",
+    count: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setisLoading(true);
+
+      const urls = [
+        "http://localhost:4000/api/v1/subscribers/count",
+        "http://localhost:4000/api/v1/longest/duration",
+        "http://localhost:4000/api/v1/most/subscribers/country",
+      ];
+
+      try {
+        const responses = await Promise.all(
+          urls.map((url) =>
+            fetch(url, {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            })
+          )
+        );
+        const data = await Promise.all(responses.map((res) => res.json()));
+
+        setTotalSubscribers(data[0].totalSubscribers);
+        setLongestDuration({
+          subscriber: data[1].subscriber,
+          durationInDays: data[1].durationInDays,
+        });
+        setMostSubscribersCountry({
+          country: data[2].country,
+          count: data[2].count,
+        });
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      } finally {
+        setisLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       setisLoading(true);
@@ -107,15 +156,28 @@ const Table = () => {
           )}
         </div>
       </div>
-      <div className="m-3 p-3 grid grid-cols-12 justify-between gap-3 h-[200px] w-[940px]">
-        <div className="col-span-4 justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
-          <p className="font-bold">Total Subscriber Count</p>
+      <div className=" grid grid-cols-3 gap-3 h-[200px] w-[940px]">
+        <div className="justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
+          <p className="font-bold">
+            Total Subscriber Count <br />
+            <span className="whitespace-nowrap rounded-full bg-purple-100 px-2.5 py-0.5 text-sm text-purple-700">
+              {" "}
+              {totalSubscribers}
+            </span>
+          </p>
         </div>
-        <div className="col-span-4 justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
-          <p className="font-bold">Subscriber Longest Duration </p>
+        <div className="justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
+          <p className="font-bold">Subscriber Longest Duration</p>
+          <span className="font-extrabold">
+            {longestDuration.durationInDays} days
+          </span>
         </div>
-        <div className="col-span-4 justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
-          <p className="font-bold">Country with Most Subscribers </p>
+        <div className="justify-center bg-zinc-950 h-[100px] rounded-md p-2 border border-slate-700 border-dashed border-l-purple-600">
+          <p className="font-bold">Country with Most Subscribers</p>
+          <span className="font-extrabold">
+            {" "}
+            {mostSubscribersCountry.country} ({mostSubscribersCountry.count})
+          </span>
         </div>
       </div>
     </main>
