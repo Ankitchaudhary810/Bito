@@ -9,19 +9,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const prisma_1 = require("../prisma");
 class Service {
     static createSubscription(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                if (req.method === "POST") {
+            if (req.method === "POST") {
+                try {
+                    const { subscriptionId, subscriberId, subscriberName, subscriberCountry, subscriptionDate, } = req.body;
+                    const subscription = yield prisma_1.prisma.subscription.create({
+                        data: {
+                            id: subscriptionId,
+                            subscriberId,
+                            subscriberName,
+                            subscriberCountry,
+                            subscriptionDate,
+                        },
+                    });
+                    const subscriptions = yield prisma_1.prisma.subscription.findMany({});
+                    res.status(201).json({ success: true, data: subscriptions });
                 }
-                else {
-                    res.status(405).json({ error: "Method not allowed" });
+                catch (error) {
+                    res.status(400).json({ success: false, error: error.message });
                 }
             }
-            catch (error) {
-                res.status(400).json({ success: false, error: error.message });
+            else {
+                res.status(405).json({ error: "Method not allowed" });
             }
         });
     }
 }
+exports.default = Service;

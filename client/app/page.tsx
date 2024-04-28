@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export default function Home() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [subscriberId, setSubscriberId] = useState("");
   const [subscriberName, setSubscriberName] = useState("");
   const [subscriberCountry, setSubscriberCountry] = useState("");
@@ -13,6 +14,7 @@ export default function Home() {
 
   const handleSubmit = async (event: Event) => {
     event.preventDefault();
+    setLoading(true);
     const subscriptionId = uuidv4();
     const data = {
       subscriptionId,
@@ -22,17 +24,23 @@ export default function Home() {
       subscriptionDate: new Date(subscriptionDate),
     };
 
-    const response = await fetch("/api/subscribe", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      "http://localhost:4000/api/v1/create-subscription",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
 
     const result = await response.json();
+    console.log(result);
     if (result.success) {
+      setLoading(false);
       router.push("/table");
     } else {
-      alert(result.error); // Show error message if the submission failed
+      setLoading(false);
+      alert(result.error);
     }
   };
 
@@ -61,7 +69,7 @@ export default function Home() {
         <div className="bg-zinc-900 p-2 m-3 min-h-[300px] min-w-[300px] rounded-md border border-zinc-600">
           <form
             onSubmit={handleSubmit}
-            className=" min-h-[300px] min-w-[300px] rounded-md border border-zinc-600 text-black flex  flex-col "
+            className=" min-h-[300px] min-w-[300px] rounded-md  text-black flex  flex-col "
           >
             <input
               className="p-2 m-2"
@@ -98,8 +106,9 @@ export default function Home() {
             <button
               className="p-2 m-2 bg-gray-200 hover:bg-gray-300 rounded"
               type="submit"
+              disabled={loading}
             >
-              Submit
+              {loading ? "Plese Wait..." : "Submit"}
             </button>
           </form>
         </div>
