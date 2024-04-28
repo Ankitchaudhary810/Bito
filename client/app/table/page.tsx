@@ -20,6 +20,7 @@ const Table = () => {
     subscriber: {},
     durationInDays: 0,
   });
+  console.log(longestDuration);
   const [mostSubscribersCountry, setMostSubscribersCountry] = useState({
     country: "",
     count: 0,
@@ -81,7 +82,7 @@ const Table = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-24">
+    <main className="flex min-h-screen flex-col items-center p-24 ">
       <div>
         <p className="text-3xl mb-2">
           Bito <span className="text-sm font-serif">Subscriber Details</span>
@@ -103,7 +104,7 @@ const Table = () => {
         <div className="p-2 m-3">
           {isLoading ? (
             <>
-              <p className="text-zinc-700 text-xl">Loading...</p>
+              <p className="text-zinc-100 text-xl animate-pulse">Loading...</p>
             </>
           ) : (
             <div className="overflow-x-auto rounded-lg border border-zinc-200">
