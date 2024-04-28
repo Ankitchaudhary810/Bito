@@ -16,7 +16,7 @@ app.use((0, cors_1.default)({
     origin: "*",
     methods: "*",
 }));
-app.use("/", index_1.default);
+app.use("/api/v1", index_1.default);
 app.listen(process.env.PORT, () => {
     console.log("Server is running at port", process.env.PORT);
 });

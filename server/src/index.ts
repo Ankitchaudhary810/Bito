@@ -16,7 +16,7 @@ app.use(
   })
 );
 
-app.use("/", router);
+app.use("/api/v1", router);
 app.listen(process.env.PORT, () => {
   console.log("Server is running at port", process.env.PORT);
 });
