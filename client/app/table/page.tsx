@@ -1,9 +1,37 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+
+interface Subscription {
+  id: string;
+  subscriberId: string;
+  subscriberName: string;
+  subscriberCountry: string;
+  subscriptionDate: string;
+}
 
 const Table = () => {
   const router = useRouter();
+  const [isLoading, setisLoading] = useState(false);
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setisLoading(true);
+      const response = await fetch(
+        "http://localhost:4000/api/v1/get-all-subscription-list",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const result = await response.json();
+      setSubscriptions(result);
+      console.log(result);
+      setisLoading(false);
+    };
+    fetchData();
+  }, []);
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <div>
@@ -25,73 +53,58 @@ const Table = () => {
           </button>
         </div>
         <div className="p-2 m-3">
-          <div className="overflow-x-auto rounded-lg border border-zinc-200">
-            <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-              <thead className="ltr:text-left rtl:text-right">
-                <tr>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
-                    Name
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
-                    Date of Birth
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
-                    Role
-                  </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
-                    Salary
-                  </th>
-                </tr>
-              </thead>
+          {isLoading ? (
+            <>
+              <p className="text-zinc-700 text-xl">Loading...</p>
+            </>
+          ) : (
+            <div className="overflow-x-auto rounded-lg border border-zinc-200">
+              <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                <thead className="ltr:text-left rtl:text-right">
+                  <tr>
+                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
+                      subscriptionId
+                    </th>
 
-              <tbody className="divide-y divide-gray-200">
-                <tr>
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    John Doe
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    24/05/1995
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    Web Developer
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    $120,000
-                  </td>
-                </tr>
+                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
+                      subscriberId
+                    </th>
+                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
+                      subscriberCountry
+                    </th>
+                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
+                      subscriberName
+                    </th>
+                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-300 bg-zinc-900">
+                      subscriptionDate
+                    </th>
+                  </tr>
+                </thead>
 
-                <tr>
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Jane Doe
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    04/11/1980
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    Web Designer
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    $100,000
-                  </td>
-                </tr>
-
-                <tr>
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                    Gary Barlow
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    24/05/1995
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    Singer
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                    $20,000
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+                <tbody className="divide-y divide-gray-200">
+                  {subscriptions.map((sub) => (
+                    <tr key={sub?.id}>
+                      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                        {sub.id}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                        {sub.subscriberId}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        {sub.subscriberCountry}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        {sub.subscriberName}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                        {new Date(sub.subscriptionDate).toLocaleDateString()}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       </div>
     </main>

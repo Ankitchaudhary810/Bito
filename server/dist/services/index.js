@@ -33,7 +33,18 @@ class Service {
                 }
             }
             else {
-                res.status(405).json({ error: "Method not allowed" });
+                res.status(405).json({ error: `${req.method} Method not allowed` });
+            }
+        });
+    }
+    static GetAllSubscription(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (req.method === "GET") {
+                const subscriptios = yield prisma_1.prisma.subscription.findMany({});
+                res.status(201).json(subscriptios);
+            }
+            else {
+                res.status(405).json({ error: `${req.method} Method not allowed` });
             }
         });
     }

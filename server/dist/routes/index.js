@@ -7,4 +7,5 @@ const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 const services_1 = __importDefault(require("../services"));
 router.post("/api/v1/create-subscription", services_1.default.createSubscription);
+router.get("/api/v1/get-all-subscription-list", services_1.default.GetAllSubscription);
 exports.default = router;
